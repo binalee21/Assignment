@@ -1,3 +1,4 @@
+import 'cypress-file-upload';
 
 Cypress.Commands.add("login", (refreshToken) => {
     cy.request({

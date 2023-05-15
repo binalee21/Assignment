@@ -1,5 +1,5 @@
 import './commands';  
 
-before(() =>{
+beforeEach(() =>{
 cy.login(Cypress.config('refreshToken'))
 })
