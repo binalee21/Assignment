@@ -8,98 +8,126 @@ describe('Clone a playlist and verify the copy created', () => {
     let startDate = "";
     let endDate = "";
     let tracks = [];
+    let cleanToggle;
+    let premiumPlaylistToggle;
+    let childOrientedToggle;
 
-    it('Navigate to first playlist and fetch text of clonable elements', () => {
+    it('navigate to first playlist and fetch text of clonable elements', () => {
         //Navigate to first playlist
         cy.get('.app-name').should('have.text','Playlists');
         cy.get('.clickable').eq(0).click();
 
         //fetching all the elements value and assigning to variables
-        cy.get('.ant-card-meta-title').invoke('text').then( elText => {
-            playListTitleHeader = elText;
-        });
-        cy.get('input[id="title"]').then(($el) => {
-            playListTitleTextBox = $el.text();
-            cy.log($el.text())
-            cy.log( playListTitleTextBox );
-        });        
-        // cy.get('#title').invoke('text').then( elText => {
-        //     playListTitleTextBox = elText;
-        // });
-        cy.get('#description').invoke('text').then( elText => {
+        cy.get('.ant-card-meta-title')
+            .invoke('text')
+            .then( elText => {
+            playListTitleHeader = elText;            
+            });      
+        cy.get('#title')
+            .invoke('val')
+            .then( elText => {
+            playListTitleTextBox = elText;
+            });
+        cy.get('#description')
+            .invoke('val')
+            .then( elText => {
             descriptionTextBox = elText;
-            cy.log( descriptionTextBox );
-        });
-        cy.get('#author').invoke('text').then( elText => {
+            });
+        cy.get('#author')
+            .invoke('val')
+            .then( elText => {
             authorTextbox = elText;
-            cy.log( authorTextbox );
-        });
-        cy.get('[placeholder="Select date"]').eq(0).invoke('text').then( elText => {
-            startDate = elText;
-            cy.log( startDate );
-        });
-        cy.get('[placeholder="Select date"]').eq(0).invoke('text').then( elText => {
-            endDate = elText;
-            cy.log( endDate );
-        });
+            });
+        cy.get('[placeholder="Select date"]')
+            .eq(0)
+            .invoke('val')
+            .then( elText => {
+                startDate = elText;            
+            });
+        cy.get('[placeholder="Select date"]')
+            .eq(1)
+            .invoke('val')
+            .then( elText => {
+                endDate = elText;
+            });
         cy.get('.tracks-row .ant-col-5')
             .each((el, index, $list) => {
                 tracks[index] = el.text();
-            });        
-    });
-   
-    it('display saved variables', () => {
-        //displaying all variables
-        cy.log( playListTitleHeader );
-        cy.log( playListTitleTextBox );
-        cy.log( descriptionTextBox );
-        cy.log( authorTextbox );
-        cy.log( startDate );
-        cy.log( endDate );
-        cy.log( tracks[1] );
-    })
-    it('clone playlist and verify success message', () => {
-        //verify tootltip message while hovering to clone button
+            });  
         
+        //fetching toggle status
+        cy.get('[formcontrolname="isExplicit"] button')
+            .then( $el => {
+                cleanToggle = $el.hasClass("ant-switch-checked");
+            }); 
+        cy.get('[formcontrolname="isPremium"] button')
+            .then( $el => {
+                premiumPlaylistToggle = $el.hasClass("ant-switch-checked");
+            });
+        cy.get('[formcontrolname="isChildOriented"] button')
+            .then( $el => {
+            childOrientedToggle = $el.hasClass("ant-switch-checked");
+            });         
+    });
+
+    it('clone playlist and verify', () => {
+        //verify tootltip message while hovering to clone button        
         cy.get('[data-name="clone"]')
             .invoke('show')
             .trigger('mouseenter')
             .wait(1000);        
-        cy.get('.ant-popover-inner-content')
-            .should('have.text', 'Clone this playlist.');
+        cy.get('.ant-popover-inner-content').should('have.text', 'Clone this playlist.');
 
-        //click clone and verify success message
-        cy.get('[data-name="clone"]').click();
-        cy.wait(1000);
+        //click clone and verify
+        cy.get('[data-name="clone"]').click();   
+        cy.get('.desktop').contains(' Clone Playlist ').should('be.visible');
+    });
 
+    it('verify cloned playlist', () => {
         //verify playlist header title  
         cy.get('.ant-card-meta-title').should('have.text', `${playListTitleHeader} (Copy)`);
 
         //verify Editors Name
         cy.get('[formcontrolname="editors"]').should('have.value', "");
 
+        //verify playlistTitle
+        cy.get('#title').should('have.value', `${playListTitleTextBox} (Copy)`);
+
         //verify playlistDescription
-        cy.get('#description').should('not.have.value', "");
+        cy.get('#description').should('have.value', descriptionTextBox);
 
         //verify playlistAuthor
-        cy.get('#author').should('not.have.value', "");
+        cy.get('#author').should('have.value', authorTextbox);
 
         //verify countries        
         cy.get('[formcontrolname="countries"]').should('have.value', "");        
 
         //verify startdate and enddate        
-        cy.get('[placeholder="Select date"]').eq(0).should('not.have.value', "")
-        cy.get('[placeholder="Select date"]').eq(1).should('not.have.value', "")
+        cy.get('[placeholder="Select date"]').eq(0).should('have.value', startDate);
+        cy.get('[placeholder="Select date"]').eq(1).should('have.value', endDate);
+
+        //verify all toggles
+        if(cleanToggle === true){
+            cy.get('[formcontrolname="isExplicit"] button')
+                .should('have.class', 'ant-switch-checked');
+        }
+        if(premiumPlaylistToggle === true){
+            cy.get('[formcontrolname="isPremium"] button')
+                .should('have.class', 'ant-switch-checked');
+        }
+        if(childOrientedToggle === true){
+            cy.get('[formcontrolname="isChildOriented"] button')
+                .should('have.class', 'ant-switch-checked');
+        }
 
         //verify playlistCategories
         cy.get('[formcontrolname="categories"]').should('have.value', "");
 
-        // //verify tracks name with search string 
-        // cy.get('.tracks-row .ant-col-5')
-        //     .each((el, index, $list) => {
-        //         expect(el.text()).includes(constant.tracksSearch);
-        //     });
-    })
-
+        //verify tracks name with search string 
+        cy.get('.tracks-row .ant-col-5')
+            .each((el, index, $list) => {
+                cy.wrap(el).should('have.text', tracks[index]);
+            });
+    });
 });
   
