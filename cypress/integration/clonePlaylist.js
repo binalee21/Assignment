@@ -50,6 +50,7 @@ describe('Clone a playlist and verify the copy created', () => {
             .then( elText => {
                 endDate = elText;
             });
+        cy.wait(3000);
         cy.get('.tracks-row .ant-col-5')
             .each((el, index, $list) => {
                 tracks[index] = el.text();
