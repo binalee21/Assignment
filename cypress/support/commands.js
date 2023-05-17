@@ -10,24 +10,52 @@ Cypress.Commands.add("login", (refreshToken) => {
     cy.visit("/");
   });  
 });
+
+Cypress.Commands.add("getRandomNumbers", () => {
+  let firstNumber;
+  let secondNumber;
+  do {
+    firstNumber = Math.floor(Math.random() * 7);
+  }while(firstNumber === 0);
   
+  do {
+    secondNumber = Math.floor(Math.random() * 7);
+  } while(firstNumber === secondNumber || secondNumber === 0); 
+
+  let random = [firstNumber, secondNumber];
+  return cy.wrap(random);
+});
+
 Cypress.Commands.add("moveTrackDown", (startRow, destinationRow, trackTitle) => {
-  const numberOfMoves = destinationRow - startRow;
-  cy.log(numberOfMoves);
-  for(let index = 1; index<=numberOfMoves; index++) {
-    cy.get(`.tracks-row:nth-child(${startRow + index}) [nztype="arrow-down"]`).click();
-  }
-  cy.get(`.tracks-row:nth-child(${destinationRow+1}) div:nth-child(4)`).should('have.text', trackTitle);
+  for(let index = 1; index <= (destinationRow - startRow); index++) {
+    cy.get('playlist-tracks')
+      .first()
+      .find(`.tracks-row:nth-child(${startRow + index}) [nztype="arrow-down"]`)
+      .click();
+  }  
 });
 
 Cypress.Commands.add("moveTrackUp", (startRow, destinationRow, trackTitle) => {
-  const numberOfMoves = Math.abs(startRow - destinationRow);
-  cy.log(numberOfMoves);
-  for(let index = 0; index<numberOfMoves; index++) {
-    cy.get(`.tracks-row:nth-child(${destinationRow + 1 - index}) [nztype="arrow-up"]`).click();
+  for(let index = 0; index < (startRow - destinationRow); index++) {
+    cy.get('playlist-tracks')
+      .first()
+      .find(`.tracks-row:nth-child(${startRow + 1 - index}) [nztype="arrow-up"]`)
+      .click();
   }
-  cy.get(`.tracks-row:nth-child(${startRow+1}) div:nth-child(4)`).should('have.text', trackTitle);
 });
+
+// Cypress.Commands.add("generateTwoRandomNumber", () => {
+//   let firstNumber;
+//   let secondNumber;
+//   firstNumber = Math.floor(Math.random() * 10);
+//   cy.log(firstNumber);
+//   do {
+//     secondNumber = Math.floor(Math.random() * 10);
+//   } while(secondNumber === firstNumber);  
+//   cy.log(secondNumber);
+//   //const randomNumber = [firstNumber, secondNumber];
+//   //return cy.wrap(randomNumber);
+// });
 
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
