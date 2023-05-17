@@ -11,16 +11,18 @@ describe('swap creation and deletion', () => {
 
         //calling custom command to create swap
         cy.createSwapAndSubmit(constant.firstTrack, constant.secondTrack);
-    });
+    });   
 
     it('verify created swap', () => {
+        //calling search track custom command
+        cy.searchSwap(constant.firstTrack);
+
         //verify created swap track details in swap dashboard
-        cy.get('tr:nth-child(1) td:nth-child(1)').should('have.text', constant.firstTrack);
-        cy.get('tr:nth-child(1) td:nth-child(6)').should('have.text', constant.secondTrack);
+        cy.get('tr td:nth-child(1)').should('have.text', constant.firstTrack);
+        cy.get('tr td:nth-child(6)').should('have.text', constant.secondTrack);
 
         //verify upload button tooltip text of first swap with mouseEnter event
         cy.get('[nztype="upload"]')
-            .eq(0)
             .invoke('show')
             .trigger('mouseenter')
             .wait(1000);        
@@ -30,10 +32,12 @@ describe('swap creation and deletion', () => {
 
     it('delete the swap created and verify', () => {
         //calling custom command to delete swap
-        cy.deleteSwap(0);  
+        cy.deleteSwap();  
+
+        //calling search track custom command with deleted swap id
+        cy.searchSwap(constant.firstTrack);
         
-        //verify swap dashboard for recently deleted swap
-        cy.get('a[routerlink="/swaps"]').click();
-        cy.get('tr:nth-child(1) td:nth-child(1)').should('not.have.text', constant.firstTrack);
+        //verify search result after deletion
+        cy.get('.ant-empty-image').should('be.visible');
     });
 });

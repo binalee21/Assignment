@@ -11,6 +11,11 @@ Cypress.Commands.add("login", (refreshToken) => {
   });  
 });
 
+Cypress.Commands.add("searchSwap", (trackId) => {
+  cy.get('input[formcontrolname="fromId"]').clear().type(trackId);
+  cy.wait(2000);
+});
+
 Cypress.Commands.add("createSwapAndSubmit", (firstTrack, secondTrack) => {
   //create new swap, add swap details and verify
   cy.get('.ant-modal-title').should('have.text','Create Swap');        
@@ -30,8 +35,8 @@ Cypress.Commands.add("createSwapAndSubmit", (firstTrack, secondTrack) => {
   cy.get('.ant-notification-notice-close-x').click();
 });
 
-Cypress.Commands.add("deleteSwap", (index) => {
-  cy.get('button[nztype="delete"]').eq(index).click();
+Cypress.Commands.add("deleteSwap", () => {
+  cy.get('button[nztype="delete"]').click();
   cy.get('.ant-modal-confirm-title').should('have.text', 'Delete Swap?');        
   cy.get('.ant-btn').contains(' OK ').click();
   cy.get('.ant-notification-notice-description')
