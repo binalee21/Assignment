@@ -1,27 +1,25 @@
 import constant from "../fixtures/constants.json";
 
 describe('Create new playlist', () => {
+    let dates = [];
 
-    it('Create Playlist which works with Non-explicit and explicit tracks', () => {
+    it('enter all feilds in Create Playlist page', () => {
         //click on new playlist button
+        cy.get('.app-name').should('have.text','Playlists');
         cy.get('button.ant-btn > .ng-star-inserted').click();
+        cy.get('.desktop').contains(' Create New Playlist ').should('be.visible');
 
         //Select Editors value from autocomplete Textbox
         cy.get('[nzerrortip="Editors is required"]').type(constant.editors);
-        cy.get('re-tag-content > span').click({ force: true });
+        cy.get('re-tag-content > span').click({ force: true });        
 
-        //Entering Title, description and author
+        //Entering Title, description and author and verify
         cy.get('#title').type(constant.playlistTitle);
         cy.get('#description').type(constant.playlistDescription);
         cy.get('#author').type(constant.playlistAuthor);
 
         //image selection        
-        cy.get('[data-icon="file-add"').click();
-        cy.get('#uploadButton').click();
-        cy.get('input[type="file"]').attachFile('ihmLogo.png');
-        cy.wait(3000);
-        cy.get('re-asset-renderer div').eq(0).click();
-        cy.get('i[nztype="check"]').eq(1).click();
+        cy.uploadImage();
 
         //select multiple countries from dropdown
         cy.get('[formcontrolname="countries"]').click();
@@ -31,20 +29,15 @@ describe('Create new playlist', () => {
         };
 
         //selecting previous month from calrender as startdate
-        cy.get('button.ant-btn > .ng-star-inserted').click();
-        cy.get('[placeholder="Select date"]').eq(0).click();
-        cy.wait(2000);
-        cy.get('.ant-picker-header-prev-btn').click();        
-        cy.get('.ant-picker-cell-in-view').contains("1").click();        
-        cy.get('.ant-picker-ok > .ant-btn').click();
-        cy.wait(1000);
+        cy.enterStartDate();
 
         //selecting next month from calender as enddate
-        cy.get('[placeholder="Select date"]').eq(1).click();
-        cy.get('.ant-picker-header-next-btn').click();
-        cy.wait(2000);
-        cy.get('.ant-picker-cell-in-view').contains("1").click();
-        cy.get('.ant-picker-ok > .ant-btn').click();
+        cy.enterEndDate()
+
+        //capturing current date and time for verification
+        cy.getStartAndEndDates().then(data => {
+            dates = data;
+        })
 
         //selecting category from dropdown
         cy.get('[formcontrolname="categories"]').type(constant.playlistCategories);
@@ -52,10 +45,46 @@ describe('Create new playlist', () => {
 
         //Turn on Clean toggle
         cy.get('[formcontrolname="isExplicit"]').click();
+    });
 
-        //search track songs, select non-explicit and explicit tracks and save playlist  
+    it('verify Entered playlist details', () => {
+        //verify playlist title 
+        cy.get('.ant-card-meta-title').should('have.text', constant.playlistTitle);
+
+        //verify Editors Name
+        cy.get('[formcontrolname="editors"]').contains(constant.editors);
+
+        //verify playlistDescription
+        cy.get('#description').should('have.value', constant.playlistDescription);
+
+        //verify playlistAuthor
+        cy.get('#author').should('have.value', constant.playlistAuthor);
+
+        //verify countries        
+        for (var index in constant.countries) {
+            cy.get('[formcontrolname="countries"]').contains(constant.countries[index])
+        };
+
+        //verify startdate and enddate        
+        cy.get('[formcontrolname="startDate"] input').should('have.value', dates[0])
+        cy.get('[formcontrolname="endDate"] input').should('have.value', dates[1])
+
+        //verify playlistCategories
+        cy.get(`[title="activities/${constant.playlistCategories}"]`)
+            .scrollIntoView()
+            .should('be.visible');
+
+        //verify checked toggle
+        cy.get('.ant-switch-checked').should('be.enabled');
+
+    });
+
+    it('search track songs, select non-explicit and explicit tracks and save playlist', () => {
         for (var index in constant.tracksSearch) {     
-            cy.get('.search').eq(0).type(constant.tracksSearch[index]);
+            cy.get('playlist-tracks')
+                .first()
+                .find('.search')
+                .type(constant.tracksSearch[index]);
             cy.wait(2000);
             cy.get('.ant-list-item-meta-title')
                 .each(($el, index, $list) => {           
@@ -75,8 +104,9 @@ describe('Create new playlist', () => {
             cy.get('.ant-notification-notice-message').should('have.text', 'Save Success');
             cy.get('.ant-notification-notice-close-x').click({ force: true });
         }
-
-        //publish playlist and verify
+    });         
+        
+    it('publish playlist and verify', () => {        
         cy.get('button[data-name="publish"]').first().click({ force: true });
         cy.get('.ant-notification-notice-message').should('have.text', 'Publish Success');
     });
