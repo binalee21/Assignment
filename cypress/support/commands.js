@@ -1,18 +1,18 @@
 
 Cypress.Commands.add("login", (refreshToken) => {
-    cy.request({
-      method: "POST",
-      url: `https://auth.radioedit.ihrint.com/token?grant_type=refresh_token&refresh_token=${refreshToken}`
-    }).then(response => {
-      const accessToken = response.body.access_token;
-      cy.setCookie('access_token', accessToken);
-      cy.setCookie('access_token_secure', accessToken);
-      cy.visit("/");
-    });  
-  });
+  cy.request({
+    method: "POST",
+    url: `https://auth.radioedit.ihrint.com/token?grant_type=refresh_token&refresh_token=${refreshToken}`
+  }).then(response => {
+    const accessToken = response.body.access_token;
+    cy.setCookie('access_token', accessToken);
+    cy.setCookie('access_token_secure', accessToken);
+    cy.visit("/");
+  });  
+});
 
 Cypress.Commands.add("createSwapAndSubmit", (firstTrack, secondTrack) => {
-  //create new swap and add swap details
+  //create new swap, add swap details and verify
   cy.get('.ant-modal-title').should('have.text','Create Swap');        
   cy.get('[formcontrolname="searchBy"]').first().click();
   cy.get('[title="Search By ID"] div').click();
@@ -27,17 +27,18 @@ Cypress.Commands.add("createSwapAndSubmit", (firstTrack, secondTrack) => {
   //submit swap popup and verify success message
   cy.get('[nztype="primary"]').contains(' Submit ').click();
   cy.get('.ant-notification-notice-message').should('be.visible');
+  cy.get('.ant-notification-notice-close-x').click();
 });
 
 Cypress.Commands.add("deleteSwap", (index) => {
   cy.get('button[nztype="delete"]').eq(index).click();
   cy.get('.ant-modal-confirm-title').should('have.text', 'Delete Swap?');        
   cy.get('.ant-btn').contains(' OK ').click();
-  cy.wait(1000);
   cy.get('.ant-notification-notice-description')
     .contains('Swap deleted successfully.')
     .should('be.visible');
 });
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
