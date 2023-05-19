@@ -31,22 +31,16 @@ describe('Move track order and verify', () => {
     it('move the track & verify new order', () => {       
         if(startRow < destinationRow) {
             //custom command to move tracks down
-            cy.moveTrackDown(startRow, destinationRow, trackTitle);
-
-            //verify moved track title
-            cy.get('playlist-tracks')
-                .first()
-                .find(`.tracks-row:nth-child(${destinationRow+1}) div:nth-child(4)`)
-                .should('have.text', trackTitle);            
+            cy.moveTrackDown(startRow, destinationRow, trackTitle);           
         } else {
             //custom command to move tracks up
             cy.moveTrackUp(startRow, destinationRow, trackTitle);
-
-            //verify moved track title
-            cy.get('playlist-tracks')
-                .first()
-                .find(`.tracks-row:nth-child(${destinationRow+1}) div:nth-child(4)`)
-                .should('have.text', trackTitle);
-        }                      
+        }  
+        
+        //verify moved track title
+        cy.get('playlist-tracks')
+        .first()
+        .find(`.tracks-row:nth-child(${destinationRow+1}) div:nth-child(4)`)
+        .should('have.text', trackTitle); 
     });
  });
