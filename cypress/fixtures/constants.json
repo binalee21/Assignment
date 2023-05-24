@@ -1,0 +1,11 @@
+{
+    "testPlaylistName": "Testing Purpose",
+    "editors": "Testing123",
+    "playlistTitle": "Testing content",
+    "playlistDescription": "This playlist is for Testing purpose",
+    "playlistAuthor": "Binalee",
+    "countries": ["AU", "CA"],
+    "exclusions": "MX",
+    "playlistCategories": "relaxing", 
+    "tracksSearch": ["Relax", "Pursuit"]    
+}
