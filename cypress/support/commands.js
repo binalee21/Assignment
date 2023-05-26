@@ -18,7 +18,6 @@ Cypress.Commands.add("getRandomNumbers", () => {
   do {
     firstNumber = Math.floor(Math.random() * 7);
   }while(firstNumber === 0);
-  
   do {
     secondNumber = Math.floor(Math.random() * 7);
   } while(firstNumber === secondNumber || secondNumber === 0); 
