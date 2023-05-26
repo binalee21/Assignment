@@ -12,10 +12,6 @@
     "cypress": "^7.7.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@4tw/cypress-drag-drop": "^2.2.3"
-=======
     "cypress-file-upload": "^5.0.8"
->>>>>>> 93999df21e167da73a2b0304b2558acec01c154b
   }
 }
