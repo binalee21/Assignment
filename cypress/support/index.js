@@ -7,3 +7,4 @@ before(() => {
 beforeEach(() => {
     Cypress.Cookies.preserveOnce('access_token');
 });
+
