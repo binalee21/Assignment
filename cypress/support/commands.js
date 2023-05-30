@@ -12,6 +12,38 @@ Cypress.Commands.add("login", (refreshToken) => {
   });  
 });
 
+Cypress.Commands.add("getRandomNumbers", () => {
+  let firstNumber;
+  let secondNumber;
+  do {
+    firstNumber = Math.floor(Math.random() * 7);
+  }while(firstNumber === 0);
+  do {
+    secondNumber = Math.floor(Math.random() * 7);
+  } while(firstNumber === secondNumber || secondNumber === 0); 
+
+  let random = [firstNumber, secondNumber];
+  return cy.wrap(random);
+});
+
+Cypress.Commands.add("moveTrackDown", (startRow, destinationRow, trackTitle) => {
+  for(let index = 1; index <= (destinationRow - startRow); index++) {
+    cy.get('playlist-tracks')
+      .first()
+      .find(`.tracks-row:nth-child(${startRow + index}) [nztype="arrow-down"]`)
+      .click();
+  }  
+});
+
+Cypress.Commands.add("moveTrackUp", (startRow, destinationRow, trackTitle) => {
+  for(let index = 0; index < (startRow - destinationRow); index++) {
+    cy.get('playlist-tracks')
+      .first()
+      .find(`.tracks-row:nth-child(${startRow + 1 - index}) [nztype="arrow-up"]`)
+      .click();
+  }
+});
+
 Cypress.Commands.add("searchSwap", (trackId) => {
   cy.get('input[formcontrolname="fromId"]').clear().type(trackId);
   cy.wait(2000);
