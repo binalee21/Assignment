@@ -39,6 +39,109 @@ Cypress.Commands.add("paginationPreviousArrow", () => {
     }
   paginationPreviousArrow(); 
 });
+
+Cypress.Commands.add("fetchElementText", (elementSelector, variable) => {
+  cy.get(elementSelector)
+    .invoke('text')
+    .then( (data) => {
+      variable.push(data);
+    });
+});
+
+Cypress.Commands.add("fetchElementValue", (elementSelector, variable) => {
+  cy.get(elementSelector)
+    .invoke('val')
+    .then( (data) => {
+      variable.push(data);
+    });
+});
+
+Cypress.Commands.add("fetchToggleStatus", (elementSelector, variable) => {
+  cy.get(elementSelector)
+    .then( $el => {
+      variable.push($el.hasClass("ant-switch-checked"));
+   });
+});
+
+Cypress.Commands.add("verifyElementText", (elementSelector, elementText) => {
+  cy.get(elementSelector).should('have.text', elementText.toString());
+});
+
+Cypress.Commands.add("verifyElementValue", (elementSelector, elementValue) => {
+  cy.get(elementSelector).should('have.value', elementValue.toString());
+});
+
+Cypress.Commands.add("verifyToggle", (status) => {
+  if(status === true){
+    cy.get('[formcontrolname="isExplicit"] button')
+        .should('have.class', 'ant-switch-checked');
+ });
+  
+Cypress.Commands.add("getRandomNumbers", () => {
+  let firstNumber;
+  let secondNumber;
+  do {
+    firstNumber = Math.floor(Math.random() * 7);
+  }while(firstNumber === 0);
+  do {
+    secondNumber = Math.floor(Math.random() * 7);
+  } while(firstNumber === secondNumber || secondNumber === 0); 
+
+  let random = [firstNumber, secondNumber];
+  return cy.wrap(random);
+});
+
+Cypress.Commands.add("moveTrackDown", (startRow, destinationRow, trackTitle) => {
+  for(let index = 1; index <= (destinationRow - startRow); index++) {
+    cy.get('playlist-tracks')
+      .first()
+      .find(`.tracks-row:nth-child(${startRow + index}) [nztype="arrow-down"]`)
+      .click();
+  }  
+});
+
+Cypress.Commands.add("moveTrackUp", (startRow, destinationRow, trackTitle) => {
+  for(let index = 0; index < (startRow - destinationRow); index++) {
+    cy.get('playlist-tracks')
+      .first()
+      .find(`.tracks-row:nth-child(${startRow + 1 - index}) [nztype="arrow-up"]`)
+      .click();
+  }
+});
+
+Cypress.Commands.add("searchSwap", (trackId) => {
+  cy.get('input[formcontrolname="fromId"]').clear().type(trackId);
+  cy.wait(2000);
+});
+
+Cypress.Commands.add("createSwapAndSubmit", (firstTrack, secondTrack) => {
+  //create new swap, add swap details and verify
+  cy.get('.ant-modal-title').should('have.text','Create Swap');        
+  cy.get('[formcontrolname="searchBy"]').first().click();
+  cy.get('[title="Search By ID"] div').click();
+  cy.get('[formcontrolname="searchBy"]').first().should('have.text','Search By ID');  
+  cy.get('.search').first().type(firstTrack);
+  cy.get('.ant-list-item-meta-title').click();
+  cy.get('.display').first().should('have.text',firstTrack);
+  cy.get('.search').last().type(secondTrack);
+  cy.get('.ant-list-item-meta-title').first().click();
+  cy.get('.display').last().should('not.have.text',secondTrack);
+
+  //submit swap popup and verify success message
+  cy.get('[nztype="primary"]').contains(' Submit ').click();
+  cy.get('.ant-notification-notice-message').should('be.visible');
+  cy.get('.ant-notification-notice-close-x').click();
+});
+
+Cypress.Commands.add("deleteSwap", () => {
+  cy.get('button[nztype="delete"]').click();
+  cy.get('.ant-modal-confirm-title').should('have.text', 'Delete Swap?');        
+  cy.get('.ant-btn').contains(' OK ').click();
+  cy.get('.ant-notification-notice-description')
+    .contains('Swap deleted successfully.')
+    .should('be.visible');
+});
+  
 Cypress.Commands.add("uploadImage", () => {
   cy.get('[data-icon="file-add"').click();
   cy.get('#uploadButton').click();
@@ -76,7 +179,7 @@ Cypress.Commands.add("getStartAndEndDates", () => {
   const dates = [startDateString, endDateString];
   return cy.wrap(dates);
 });
-  
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
