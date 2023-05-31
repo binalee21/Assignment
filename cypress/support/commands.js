@@ -12,6 +12,72 @@ Cypress.Commands.add("login", (refreshToken) => {
   });  
 });
 
+Cypress.Commands.add("paginationNextArrow", () => {
+  const paginationNextArrow = () => {
+    cy.get('li[title="Next Page"]').then(($el) => {
+                      
+      if ($el.hasClass('ant-pagination-disabled')) return;
+        cy.get('li[title="Next Page"]').click();
+        cy.wait(2000);     
+        cy.get('.clickable').its('length').should('be.lte', 50).and('gt', 0);   
+        paginationNextArrow();         
+      });
+    }
+  paginationNextArrow(); 
+});
+
+Cypress.Commands.add("paginationPreviousArrow", () => {
+  const paginationPreviousArrow = () => {
+    cy.get('li[title="Previous Page"]').then(($el) => { 
+                     
+      if ($el.hasClass('ant-pagination-disabled')) return;
+        cy.get('li[title="Previous Page"]').click();
+        cy.wait(2000);
+        cy.get('.clickable').its('length').should('be.lte', 50).and('gt', 0);
+        paginationPreviousArrow();         
+      });
+    }
+  paginationPreviousArrow(); 
+});
+
+Cypress.Commands.add("fetchElementText", (elementSelector, variable) => {
+  cy.get(elementSelector)
+    .invoke('text')
+    .then( (data) => {
+      variable.push(data);
+    });
+});
+
+Cypress.Commands.add("fetchElementValue", (elementSelector, variable) => {
+  cy.get(elementSelector)
+    .invoke('val')
+    .then( (data) => {
+      variable.push(data);
+    });
+});
+
+Cypress.Commands.add("fetchToggleStatus", (elementSelector, variable) => {
+  cy.get(elementSelector)
+    .then( $el => {
+      variable.push($el.hasClass("ant-switch-checked"));
+   });
+});
+
+Cypress.Commands.add("verifyElementText", (elementSelector, elementText) => {
+  cy.get(elementSelector).should('have.text', elementText.toString());
+});
+
+Cypress.Commands.add("verifyElementValue", (elementSelector, elementValue) => {
+  cy.get(elementSelector).should('have.value', elementValue.toString());
+});
+
+Cypress.Commands.add("verifyToggle", (status) => {
+  if(status === true){
+    cy.get('[formcontrolname="isExplicit"] button')
+        .should('have.class', 'ant-switch-checked');
+  }
+});
+  
 Cypress.Commands.add("getRandomNumbers", (maxLength) => {
   let firstNumber;
   let secondNumber;
@@ -76,7 +142,7 @@ Cypress.Commands.add("deleteSwap", () => {
     .contains('Swap deleted successfully.')
     .should('be.visible');
 });
-
+  
 Cypress.Commands.add("uploadImage", () => {
   cy.get('[data-icon="file-add"').click();
   cy.get('#uploadButton').click();
@@ -109,8 +175,10 @@ Cypress.Commands.add("getStartAndEndDates", () => {
   const time = today.toTimeString().split(' ')[0].split(':');        
   let previousMonth = (today.getMonth()).toString().padStart(2, "0");
   let nextMonth = (today.getMonth() + 2).toString().padStart(2, "0");
-  const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:${time[1]}`
-  const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:${time[1]}`
+  //const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:${time[1]}`
+  //const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:${time[1]}`
+  const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:`
+  const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:`
   const dates = [startDateString, endDateString];
   return cy.wrap(dates);
 });
