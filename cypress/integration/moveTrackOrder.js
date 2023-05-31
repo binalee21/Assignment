@@ -12,7 +12,7 @@ describe('Move track order and verify', () => {
        
         //fetch track title of track which needs to be move
         cy.get('playlist-tracks').first().find('.tracks-row').then( $el => {
-            cy.getRandomNumbers().then(data => {
+            cy.getRandomNumbers($el.length).then(data => {
                 randNumbers = data;
                 startRow = randNumbers[0];
                 destinationRow = randNumbers[1];
