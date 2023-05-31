@@ -12,14 +12,14 @@ Cypress.Commands.add("login", (refreshToken) => {
   });  
 });
 
-Cypress.Commands.add("getRandomNumbers", () => {
+Cypress.Commands.add("getRandomNumbers", (maxLength) => {
   let firstNumber;
   let secondNumber;
   do {
-    firstNumber = Math.floor(Math.random() * 7);
+    firstNumber = Math.floor(Math.random() * maxLength);
   }while(firstNumber === 0);
   do {
-    secondNumber = Math.floor(Math.random() * 7);
+    secondNumber = Math.floor(Math.random() * maxLength);
   } while(firstNumber === secondNumber || secondNumber === 0); 
 
   let random = [firstNumber, secondNumber];
