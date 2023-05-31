@@ -12,6 +12,34 @@ Cypress.Commands.add("login", (refreshToken) => {
   });  
 });
 
+Cypress.Commands.add("paginationNextArrow", () => {
+  const paginationNextArrow = () => {
+    cy.get('li[title="Next Page"]').then(($el) => {
+                      
+      if ($el.hasClass('ant-pagination-disabled')) return;
+        cy.get('li[title="Next Page"]').click();
+        cy.wait(2000);     
+        cy.get('.clickable').its('length').should('be.lte', 50).and('gt', 0);   
+        paginationNextArrow();         
+      });
+    }
+  paginationNextArrow(); 
+});
+
+Cypress.Commands.add("paginationPreviousArrow", () => {
+  const paginationPreviousArrow = () => {
+    cy.get('li[title="Previous Page"]').then(($el) => { 
+                     
+      if ($el.hasClass('ant-pagination-disabled')) return;
+        cy.get('li[title="Previous Page"]').click();
+        cy.wait(2000);
+        cy.get('.clickable').its('length').should('be.lte', 50).and('gt', 0);
+        paginationPreviousArrow();         
+      });
+    }
+  paginationPreviousArrow(); 
+});
+
 Cypress.Commands.add("fetchElementText", (elementSelector, variable) => {
   cy.get(elementSelector)
     .invoke('text')
@@ -113,7 +141,7 @@ Cypress.Commands.add("deleteSwap", () => {
     .contains('Swap deleted successfully.')
     .should('be.visible');
 });
-
+  
 Cypress.Commands.add("uploadImage", () => {
   cy.get('[data-icon="file-add"').click();
   cy.get('#uploadButton').click();
