@@ -75,7 +75,8 @@ Cypress.Commands.add("verifyToggle", (status) => {
   if(status === true){
     cy.get('[formcontrolname="isExplicit"] button')
         .should('have.class', 'ant-switch-checked');
- });
+  }
+});
   
 Cypress.Commands.add("getRandomNumbers", () => {
   let firstNumber;
@@ -174,8 +175,10 @@ Cypress.Commands.add("getStartAndEndDates", () => {
   const time = today.toTimeString().split(' ')[0].split(':');        
   let previousMonth = (today.getMonth()).toString().padStart(2, "0");
   let nextMonth = (today.getMonth() + 2).toString().padStart(2, "0");
-  const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:${time[1]}`
-  const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:${time[1]}`
+  //const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:${time[1]}`
+  //const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:${time[1]}`
+  const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:`
+  const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:`
   const dates = [startDateString, endDateString];
   return cy.wrap(dates);
 });

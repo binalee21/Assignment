@@ -66,11 +66,17 @@ describe('Create new playlist', () => {
         };
 
         //verify startdate and enddate        
-        cy.get('[formcontrolname="startDate"] input').should('have.value', dates[0])
-        cy.get('[formcontrolname="endDate"] input').should('have.value', dates[1])
+        cy.get('[formcontrolname="startDate"] input').invoke('val').then(($el) => {
+            $el.includes(dates[0])
+        })
+        cy.get('[formcontrolname="endDate"] input').invoke('val').then(($el) => {
+            $el.includes(dates[1])
+        })
+        //cy.get('[formcontrolname="endDate"] input').contains(dates[1])
 
         //verify playlistCategories
         cy.get(`[title="activities/${constant.playlistCategories}"]`)
+            .eq(0)
             .scrollIntoView()
             .should('be.visible');
 

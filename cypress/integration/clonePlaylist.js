@@ -1,5 +1,3 @@
-import constant from "../fixtures/example.json";
-
 describe('Clone a playlist and verify the copy created', () => {
     let playList = {
         playListTitleHeader: [],
