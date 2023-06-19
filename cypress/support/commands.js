@@ -1,16 +1,16 @@
 import 'cypress-file-upload';
 
 Cypress.Commands.add("login", (refreshToken) => {
-  cy.request({
-    method: "POST",
-    url: `https://auth.radioedit.ihrint.com/token?grant_type=refresh_token&refresh_token=${refreshToken}`
-  }).then(response => {
-    const accessToken = response.body.access_token;
-    cy.setCookie('access_token', accessToken);
-    cy.setCookie('access_token_secure', accessToken);
-    cy.visit("/");
-  });  
-});
+    cy.request({
+      method: "POST",
+      url: `https://auth.radioedit.ihrint.com/token?grant_type=refresh_token&refresh_token=${refreshToken}`
+    }).then(response => {
+      const accessToken = response.body.access_token;
+      cy.setCookie('access_token', accessToken);
+      cy.setCookie('access_token_secure', accessToken);
+      cy.visit("/");
+    });  
+  });
 
 Cypress.Commands.add("paginationNextArrow", () => {
   const paginationNextArrow = () => {
@@ -189,11 +189,15 @@ Cypress.Commands.add('dragTo',(dragSelector, dropSelector ) => {
   .trigger('mouseover', {force: true})
   .trigger('mousedown', {button: 0})
   .trigger('mousemove', {force: true});
-
   cy.get(dropSelector)
   .trigger('mousemove', {force: true})
   .click({force: true})
   .trigger('mouseup', {button: 0})
+  cy.get('re-master-detail-content').scrollTo('bottom' , {force: true});
+  cy.get(dropSelector)
+  .trigger('mousemove', {force: true})
+  .click()
+  .trigger('mouseup', { force: true})
 });
 
 Cypress.Commands.add('findElementVisibility',(locator) => {

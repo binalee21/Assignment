@@ -4,6 +4,7 @@ describe('Edit already existing Genre', () => {
     let genreCountryId = ['Canada (CA)', 'Mexico (MX)', 'Australia (AU)', 'New Zealand (NZ)'];
    
     it('Navigate to Genre Management page, Navigate to Test Genre and verify', () => {
+        cy.visit('https://streams.radioedit.ihrint.com/');
         //verify the logo
         cy.get('.logo').should('be.visible');
         //verify heading

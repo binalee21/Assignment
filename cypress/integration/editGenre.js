@@ -4,6 +4,7 @@ describe('Edit already existing Genre', () => {
     let countryId = 'Spain';   
 
     it('Navigate to Genre Management page, Navigate to Genre and verify', () => {
+        cy.visit('https://streams.radioedit.ihrint.com/');
         //verify the logo
         cy.get('.logo').should('be.visible');
         //verify heading

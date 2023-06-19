@@ -1,5 +1,5 @@
 {
-    "baseUrl": "https://streams.radioedit.ihrint.com/",
+    "baseUrl": "https://playlists2.radioedit.ihrint.com/",
     "chromeWebSecurity": false,
     "defaultCommandTimeout": 10000,
     "projectId": "uvzjoc",
