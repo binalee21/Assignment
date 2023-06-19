@@ -183,6 +183,25 @@ Cypress.Commands.add("getStartAndEndDates", () => {
   return cy.wrap(dates);
 });
 
+Cypress.Commands.add('dragTo',(dragSelector, dropSelector ) => {
+  cy.get(dragSelector)
+  .scrollIntoView({force: true})
+  .trigger('mouseover', {force: true})
+  .trigger('mousedown', {button: 0})
+  .trigger('mousemove', {force: true});
+
+  cy.get(dropSelector)
+  .trigger('mousemove', {force: true})
+  .click({force: true})
+  .trigger('mouseup', {button: 0})
+});
+
+Cypress.Commands.add('findElementVisibility',(locator) => {
+  cy.get('body').then(($body) => {
+    const element = $body.find(locator);
+    if(element.length) element.click();   
+  });          
+});
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
