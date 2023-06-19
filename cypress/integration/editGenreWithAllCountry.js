@@ -72,15 +72,17 @@ describe('Edit already existing Genre', () => {
         cy.wait(5000)
         cy.get('nz-option-item.ant-select-item')
             .each((el, index, list) => {
-                if(el.text().trim() !== 'ES')
+                if((el.text().trim()) !== 'ES')
                 {
                     cy.get(`[title="countries/${el.text().trim()}"]`).click({force:true});             
                     cy.wait(1000);
-                    cy.get('.clickable').contains('Test_Techo_Genre_Edited (186)').should('not.exist'); 
+                    cy.get('body').then(($body) => {
+                        const element = $body.find('.clickable');
+                        if(element.length) cy.get('.clickable').contains('Test_Techo_Genre_Edited (186)').should('not.exist');   
+                      });                     
                 }
         cy.get('.ant-select-selection-search-input').scrollIntoView().click({force:true});
         cy.wait(1000);             
         });
     });
- });
- 
+});
