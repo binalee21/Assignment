@@ -186,23 +186,15 @@ Cypress.Commands.add("getStartAndEndDates", () => {
 Cypress.Commands.add('dragTo',(dragSelector, dropSelector ) => {
   cy.get(dragSelector)
   .scrollIntoView({force: true})
-  .trigger('mouseover', {
-  force: true
-  })
-  .trigger('mousedown', {
-  button: 0
-  })
-  .trigger('mousemove', {
-  force: true
-  });
+  .trigger('mouseover', {force: true})
+  .trigger('mousedown', {button: 0})
+  .trigger('mousemove', {force: true});
   cy.get('re-master-detail-content').scrollTo('bottom' , {force: true});
   cy.get(dropSelector)
-  .trigger('mousemove', {
-  force: true
-  })
+  .trigger('mousemove', {force: true})
   .click()
   .trigger('mouseup', { force: true})
-})
+});
 
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
