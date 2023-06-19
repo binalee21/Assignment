@@ -189,10 +189,6 @@ Cypress.Commands.add('dragTo',(dragSelector, dropSelector ) => {
   .trigger('mouseover', {force: true})
   .trigger('mousedown', {button: 0})
   .trigger('mousemove', {force: true});
-  cy.get(dropSelector)
-  .trigger('mousemove', {force: true})
-  .click({force: true})
-  .trigger('mouseup', {button: 0})
   cy.get('re-master-detail-content').scrollTo('bottom' , {force: true});
   cy.get(dropSelector)
   .trigger('mousemove', {force: true})
