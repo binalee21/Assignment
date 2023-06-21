@@ -196,6 +196,22 @@ Cypress.Commands.add('dragTo',(dragSelector, dropSelector ) => {
   .trigger('mouseup', { force: true})
 });
 
+Cypress.Commands.add('findElementVisibility',(locator) => {
+  cy.get('body').then(($body) => {
+    const element = $body.find(locator);
+    if(element.length) element.click();   
+  });          
+});
+
+Cypress.Commands.add("fetchElementValueWithNumber", (elementSelector, index,  variable) => {
+  cy.get(elementSelector)
+    .eq(index)
+    .invoke('val')
+    .then( (data) => {
+      variable.push(data);
+    });
+});
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
