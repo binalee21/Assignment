@@ -209,7 +209,9 @@ Cypress.Commands.add('dragList',(dragSelector, dropSelector ) => {
 });
 
 Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
-  cy.get(parentTag).contains(elementText).should('exist');
+  cy.get(parentTag)
+    .contains(elementText)
+    .should('exist');
 });
 
 Cypress.Commands.add('getRandomString',(stringLength, variable) => {
