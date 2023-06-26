@@ -78,8 +78,9 @@ describe('Edit already existing Genre', () => {
         cy.get('.clickable')
             .contains('Test_Techo_Genre_Edited (186)')
             .click();
-        cy.get('.ant-input-group').eq(2).find('[data-icon="close-circle"]').click({force:true});
-        cy.get('.ant-input-group').eq(2).click();
+        cy.clickElementsBasedOnLabel('Countries', '[data-icon="close-circle"]');
+        cy.clickElementsBasedOnLabel('Countries', 'nz-select-top-control');
+        cy.wait(5000);
         cy.get('[title="Spain"] > .ant-select-item-option-content').click();
         cy.get('[data-name="save"]').click();
         cy.get('.ant-notification-notice-content')

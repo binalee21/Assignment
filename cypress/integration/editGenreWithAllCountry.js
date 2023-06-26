@@ -32,9 +32,9 @@ describe('Edit already existing Genre', () => {
         cy.get('[data-name="save"]').should('be.disabled');
 
         //Selecting all countries from the list
-        cy.get('.ant-input-group').eq(2).find('[data-icon="close-circle"]').click({force:true});
-        cy.get('.ant-input-group').eq(2).click();
-        cy.wait(5000)
+        cy.clickElementsBasedOnLabel('Countries', '[data-icon="close-circle"]');
+        cy.clickElementsBasedOnLabel('Countries', 'nz-select-top-control');
+        cy.wait(5000);
         cy.get('.ant-select-item-option-content')
             .each(($el, index, list) => {
                 $el.click();
