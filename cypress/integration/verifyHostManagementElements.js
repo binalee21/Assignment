@@ -46,7 +46,7 @@ describe('Verify Host Management page along with pagination', () => {
                     .contain(searchString.toString())
                 });
             }   
-          });
+        });
     });
 
     it('verify pagination along with Host count', () => {
