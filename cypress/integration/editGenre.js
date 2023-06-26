@@ -5,14 +5,18 @@ describe('Edit already existing Genre', () => {
 
     it('Navigate to Genre Management page, Navigate to Genre and verify', () => {
         cy.visit('https://streams.radioedit.ihrint.com/');
+
         //verify the logo
         cy.get('.logo').should('be.visible');
+
         //verify heading
         cy.get('h3').should('contain.text', 'Streams');
         cy.wait(5000);
 
         //Navigate to Genre Management page and verify
-        cy.get('.ant-menu-submenu-title').contains('Genres').click();        
+        cy.get('.ant-menu-submenu-title')
+            .contains('Genres')
+            .click();        
         cy.get('a[href="#/genres"]').click();
         cy.get('.ant-select-selection-search-input').should('be.visible');
 
@@ -51,12 +55,15 @@ describe('Edit already existing Genre', () => {
     it('Edit Genre, save and verify save message', () => {
         cy.get('.desktop').contains(' Edit Genre ').should('be.visible');
         cy.get('[data-name="save"]').should('be.disabled');
-        cy.get('#text').first().clear().type('Test_Techo_Genre_Edited');
-        cy.get('.ant-input-group').eq(2).find('[data-icon="close-circle"]').click({force:true});
-        cy.get('.ant-input-group').eq(2).click();
+        cy.typeIntoElementBasedOnLabel('Name', 'Test_Techo_Genre_Edited');
+        cy.clickElementsBasedOnLabel('Countries', '[data-icon="close-circle"]');
+        cy.clickElementsBasedOnLabel('Countries', 'nz-select-top-control');
+        cy.wait(5000);
         cy.get(`[title="${countryId}"] > .ant-select-item-option-content`).click(); 
         cy.get('[data-name="save"]').click();
-        cy.contains('Success').should('be.visible');
+        cy.get('.ant-notification-notice-content')
+            .contains('Success')
+            .should('be.visible');
     });
 
     it('verify changes to all impacted pages', () => {    
@@ -66,7 +73,10 @@ describe('Edit already existing Genre', () => {
 
         //verify genre title in selected country   
         cy.get('.ant-select-selection-search-input').click({force:true});
-        cy.get(`.ant-select-item[title="countries/${country}"]`).last().click();
-        cy.get('.clickable').contains('Test_Techo_Genre_Edited (186)').scrollIntoView().should('be.visible');                  
+        cy.get(`.ant-select-item[title="countries/${country}"]`).click();
+        cy.get('.clickable')
+            .contains('Test_Techo_Genre_Edited (186)')
+            .scrollIntoView()
+            .should('be.visible');                  
     });
 });

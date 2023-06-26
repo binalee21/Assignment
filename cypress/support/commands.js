@@ -202,6 +202,23 @@ Cypress.Commands.add('findElementVisibility',(locator) => {
     if(element.length) element.click();   
   });          
 });
+
+Cypress.Commands.add('clickElementsBasedOnLabel',(label, element) => {
+  cy.get('.ant-form-item')
+  .contains(label)
+  .parents('nz-form-item').within(() => {
+    cy.get(element).click({force:true});
+  });
+});
+
+Cypress.Commands.add('typeIntoElementBasedOnLabel',(label, inptuText) => {
+  cy.get('.ant-form-item')
+  .contains(label)
+  .parents('nz-form-item').within(() => {
+    cy.get('input').clear().type(inptuText);
+  });
+});
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
