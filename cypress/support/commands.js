@@ -208,6 +208,18 @@ Cypress.Commands.add('dragList',(dragSelector, dropSelector ) => {
   .click({force: true})
 });
 
+Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
+  cy.get(parentTag).contains(elementText).should('exist');
+});
+
+Cypress.Commands.add('getRandomString',(stringLength, variable) => {
+  var randomValues = '';
+  var stringValues = 'abcdehiklmnoprstuv';
+  for (var i = 0; i < stringLength; i++) {
+    randomValues = randomValues+stringValues.charAt(Math.floor(Math.random() * stringValues.length));
+  }
+  variable.push(randomValues);
+});
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
