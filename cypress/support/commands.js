@@ -211,7 +211,7 @@ Cypress.Commands.add('dragList',(dragSelector, dropSelector ) => {
 Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
   cy.get(parentTag)
     .contains(elementText)
-    .should('exist');
+    .should('be.visible');
 });
 
 Cypress.Commands.add('getRandomString',(stringLength, variable) => {
@@ -222,6 +222,27 @@ Cypress.Commands.add('getRandomString',(stringLength, variable) => {
   }
   variable.push(randomValues);
 });
+
+Cypress.Commands.add("checkPagination", () => {
+  let count = 1;
+
+  //traversing till the last page
+  const paginationNextArrow = () => {
+    cy.get('li[title="Next Page"]').then(($el) => {
+      cy.get(`[title="${count}"]`).should('have.class', 'ant-pagination-item-active');
+      count++;            
+      if ($el.hasClass('ant-pagination-disabled')) return;        
+        cy.get('li[title="Next Page"]').click(); 
+        paginationNextArrow();         
+      });
+    }
+  paginationNextArrow();
+
+  //clciking on first page and checking previous arrow is disabled
+  cy.get(`[title="1"]`).click();
+  cy.get('li[title="Previous Page"]').should('have.class', 'ant-pagination-disabled');
+});
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
