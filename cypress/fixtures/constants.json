@@ -8,7 +8,7 @@
     "exclusions": "MX",
     "playlistCategories": "relaxing", 
     "tracksSearch": ["Relax", "Pursuit"],
-    "headerElements":[
+    "headerElements": [
         "ID", 
         "Host Name", 
         "Auth Scheme", 

@@ -27,7 +27,7 @@ describe('Verify Host Management page along with pagination', () => {
         //fetch last hostTitle text from the hostManagement list
         cy.get('.ant-table-row td:nth-child(2)')
             .last()
-            .then( (hostTitle) => {
+            .then((hostTitle) => {
                 SEARCH_HOST_TITLE = hostTitle.text();
             });        
     });
