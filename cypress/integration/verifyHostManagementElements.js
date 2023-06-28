@@ -1,14 +1,7 @@
+import constant from "../fixtures/constants.json";
+
 describe('Verify Host Management page along with pagination', () => {
-    let searchHostTitle = "";
-    let headerElements = [
-        "ID", 
-        "Host Name", 
-        "Auth Scheme", 
-        "Countries", 
-        "Country Code", 
-        "Stream Type", 
-        "Salt"
-    ];
+    let SEARCH_HOST_TITLE = "";    
     
     it('navigate to Host Management page and verify all elements', () => {
         cy.visit('https://streams.radioedit.ihrint.com/');
@@ -27,7 +20,7 @@ describe('Verify Host Management page along with pagination', () => {
         cy.get('[formcontrolname="query"]').should('be.visible');
 
         //verifying hostManagement content Header elements
-        headerElements.forEach((headerElement) => {
+        constant.headerElements.forEach((headerElement) => {
             cy.verifyElementWithText('th', headerElement);
         });
 
@@ -35,21 +28,20 @@ describe('Verify Host Management page along with pagination', () => {
         cy.get('.ant-table-row td:nth-child(2)')
             .last()
             .then( (hostTitle) => {
-                searchHostTitle = hostTitle.text();
-                cy.log(searchHostTitle);
+                SEARCH_HOST_TITLE = hostTitle.text();
             });        
     });
 
     it('verify search functionality using fetched hostTitle track', () => {
         cy.get('[formcontrolname="query"]')
             .clear()
-            .type(searchHostTitle);
+            .type(SEARCH_HOST_TITLE);
         cy.wait(2000);
 
         //verify search hostTitle text at first row
         cy.get('.ant-table-row td:nth-child(2)')
             .first()
-            .should('have.text', searchHostTitle);
+            .should('have.text', SEARCH_HOST_TITLE);
     });
 
     it('verify pagination with iterating through all pages', () => {

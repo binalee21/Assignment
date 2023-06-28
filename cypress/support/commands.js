@@ -214,15 +214,6 @@ Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
     .should('be.visible');
 });
 
-Cypress.Commands.add('getRandomString',(stringLength, variable) => {
-  var randomValues = '';
-  var stringValues = 'abcdehiklmnoprstuv';
-  for (var i = 0; i < stringLength; i++) {
-    randomValues = randomValues+stringValues.charAt(Math.floor(Math.random() * stringValues.length));
-  }
-  variable.push(randomValues);
-});
-
 Cypress.Commands.add("checkPagination", () => {
   let count = 1;
 
@@ -232,13 +223,13 @@ Cypress.Commands.add("checkPagination", () => {
       cy.get(`[title="${count}"]`).should('have.class', 'ant-pagination-item-active');
       count++;            
       if ($el.hasClass('ant-pagination-disabled')) return;        
-        cy.get('li[title="Next Page"]').click(); 
-        paginationNextArrow();         
-      });
-    }
+      cy.get('li[title="Next Page"]').click(); 
+      paginationNextArrow();         
+    });
+  }
   paginationNextArrow();
 
-  //clciking on first page and checking previous arrow is disabled
+  //clicking on first page and checking previous arrow is disabled
   cy.get(`[title="1"]`).click();
   cy.get('li[title="Previous Page"]').should('have.class', 'ant-pagination-disabled');
 });
