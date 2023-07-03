@@ -175,8 +175,6 @@ Cypress.Commands.add("getStartAndEndDates", () => {
   const time = today.toTimeString().split(' ')[0].split(':');        
   let previousMonth = (today.getMonth()).toString().padStart(2, "0");
   let nextMonth = (today.getMonth() + 2).toString().padStart(2, "0");
-  //const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:${time[1]}`
-  //const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:${time[1]}`
   const startDateString = `${today.getFullYear()}-${previousMonth}-01 ${time[0]}:`
   const endDateString = `${today.getFullYear()}-${nextMonth}-01 ${time[0]}:`
   const dates = [startDateString, endDateString];
@@ -196,6 +194,28 @@ Cypress.Commands.add('dragTo',(dragSelector, dropSelector ) => {
   .trigger('mouseup', { force: true})
 });
 
+Cypress.Commands.add('findElementVisibility',(locator) => {
+  cy.get('body').then(($body) => {
+    const element = $body.find(locator);
+    if(element.length) element.click();   
+  });          
+});
+
+Cypress.Commands.add('clickElementsBasedOnLabel',(label, element) => {
+  cy.get('.ant-form-item')
+  .contains(label)
+  .parents('nz-form-item').within(() => {
+    cy.get(element).click({force:true});
+  });
+});
+
+Cypress.Commands.add('typeIntoElementBasedOnLabel',(label, inptuText) => {
+  cy.get('.ant-form-item')
+  .contains(label)
+  .parents('nz-form-item').within(() => {
+    cy.get('input').clear().type(inptuText);
+  });
+  
 Cypress.Commands.add('dragList',(dragSelector, dropSelector ) => {
   cy.get(dragSelector)
   .scrollIntoView({force: true})
