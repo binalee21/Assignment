@@ -7,5 +7,14 @@
     "countries": ["AU", "CA"],
     "exclusions": "MX",
     "playlistCategories": "relaxing", 
-    "tracksSearch": ["Relax", "Pursuit"]    
+    "tracksSearch": ["Relax", "Pursuit"],
+    "headerElements": [
+        "ID", 
+        "Host Name", 
+        "Auth Scheme", 
+        "Countries", 
+        "Country Code", 
+        "Stream Type", 
+        "Salt"
+    ]   
 }
