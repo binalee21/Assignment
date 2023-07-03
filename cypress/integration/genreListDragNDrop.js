@@ -8,6 +8,7 @@ describe('Genre List editing with drag and drop', () => {
         cy.visit("https://streams.radioedit.ihrint.com/")
         //verify the logo
         cy.get('.logo').should('be.visible');
+
         //verify heading
         cy.get('h3').should('contain.text', 'Streams');
         cy.wait(5000);
@@ -16,6 +17,7 @@ describe('Genre List editing with drag and drop', () => {
         cy.get('.ant-menu-submenu-title').contains('Genres').click();        
         cy.get('a[href="#/genres"]').click();
         cy.get('.ant-select-selection-search-input').should('be.visible');   
+
         //Select Test Genre present in ES country
         cy.get('.ant-select-selection-search-input').click({force:true});
         cy.get(`[title="countries/US"]`).last().click();
@@ -40,9 +42,19 @@ describe('Genre List editing with drag and drop', () => {
     });
  
      it('Drag and Drop Genre List and verify', () => {
-        cy.get('[nztype="drag"]').eq(startRow).as('dragElement');
-        cy.get('[nztype="drag"]').eq(destinationRow).as('dropElement');        
+        cy.get('[nztype="drag"]')
+            .eq(startRow)
+            .as('dragElement');
+        cy.get('[nztype="drag"]')
+            .eq(destinationRow)
+            .as('dropElement'); 
+            
+        //dragging and dropping element via calling custom command
         cy.dragList('@dragElement', '@dropElement');
-        cy.get('.clickable').eq(destinationRow).should('have.text', genreTitle);           
+
+        //verify dropped element
+        cy.get('.clickable')
+            .eq(destinationRow)
+            .should('have.text', genreTitle);           
      });        
  });

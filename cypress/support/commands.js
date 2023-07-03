@@ -201,6 +201,17 @@ Cypress.Commands.add('findElementVisibility',(locator) => {
   });          
 });
 
+Cypress.Commands.add("fetchElementValueWithLabel", (Label, variable) => {
+  cy.get('.ant-form-item')
+  .contains(Label)
+  .parents('nz-form-item').within(() => {
+    cy.get('input').invoke('val')
+    .then( (data) => {
+      variable.push(data);
+    });
+  });
+});
+
 Cypress.Commands.add('clickElementsBasedOnLabel',(label, element) => {
   cy.get('.ant-form-item')
   .contains(label)
@@ -228,6 +239,23 @@ Cypress.Commands.add('dragList',(dragSelector, dropSelector ) => {
   .click({force: true})
 });
 
+Cypress.Commands.add('clickElementBasedOnLabel',(label) => {
+  cy.get('.ant-form-item')
+  .contains(label)
+  .parents('nz-form-item').within(() => {
+    cy.get('input').click({force:true});
+  });
+});
+
+Cypress.Commands.add('typeIntoElementBasedOnLabel',(label, inptuText) => {
+  cy.get('.ant-form-item')
+  .contains(label)
+  .parents('nz-form-item').within(() => {
+    cy.get('input')
+      .clear()
+      .type(inptuText);
+  });
+  
 Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
   cy.get(parentTag)
     .contains(elementText)
