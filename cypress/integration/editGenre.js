@@ -53,13 +53,14 @@ describe('Edit already existing Genre', () => {
     });
 
     it('Edit Genre, save and verify save message', () => {
-        cy.get('.desktop').contains(' Edit Genre ').should('be.visible');
+        cy.get('.desktop').contains('Edit Genre').should('be.visible');
         cy.get('[data-name="save"]').should('be.disabled');
         cy.typeIntoElementBasedOnLabel('Name', 'Test_Techo_Genre_Edited');
         cy.clickElementsBasedOnLabel('Countries', '[data-icon="close-circle"]');
         cy.clickElementsBasedOnLabel('Countries', 'nz-select-top-control');
         cy.wait(5000);
         cy.get(`[title="${countryId}"] > .ant-select-item-option-content`).click(); 
+        cy.wait(2000);
         cy.get('[data-name="save"]').click();
         cy.get('.ant-notification-notice-content')
             .contains('Success')

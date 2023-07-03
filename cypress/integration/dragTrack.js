@@ -19,11 +19,6 @@ describe('Drag track and verify order', () => {
                 destinationRow = randNumbers[1];
             });
         });
-        //fetch length of backfill's track
-        cy.get('[additionaltrackname="Primary"] .tracks-row').then( ($el) => 
-        {
-            backFillTrackLength = $el.length;
-        });
     });
 
     it('fetch track title text which need to be drag from playlist', () => {         

@@ -226,6 +226,7 @@ Cypress.Commands.add('typeIntoElementBasedOnLabel',(label, inptuText) => {
   .parents('nz-form-item').within(() => {
     cy.get('input').clear().type(inptuText);
   });
+});
   
 Cypress.Commands.add('dragList',(dragSelector, dropSelector ) => {
   cy.get(dragSelector)
@@ -255,6 +256,7 @@ Cypress.Commands.add('typeIntoElementBasedOnLabel',(label, inptuText) => {
       .clear()
       .type(inptuText);
   });
+});
   
 Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
   cy.get(parentTag)

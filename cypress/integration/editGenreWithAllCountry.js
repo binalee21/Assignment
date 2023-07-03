@@ -27,7 +27,7 @@ describe('Edit already existing Genre', () => {
     it('Edit Test Genre with entering multiple countries, save and verify save message', () => {
         //verifying Elements
         cy.get('.desktop')
-            .contains(' Edit Genre ')
+            .contains('Edit Genre')
             .should('be.visible');
         cy.get('[data-name="save"]').should('be.disabled');
 

@@ -16,7 +16,7 @@ describe('Verify Host Management page along with pagination', () => {
 
         //verifying heading elements
         cy.get('h3').should('contain.text', 'Hosts');
-        cy.verifyElementWithText('[routerlink="/hosts/create"]', 'New Host ');       
+        cy.verifyElementWithText('[routerlink="/hosts/create"]', 'New Host');       
         cy.get('[formcontrolname="query"]').should('be.visible');
 
         //verifying hostManagement content Header elements

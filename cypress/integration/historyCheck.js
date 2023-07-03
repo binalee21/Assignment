@@ -51,7 +51,7 @@ describe('Check history functionality with editing stream and rejecting changes'
             .eq(1)
             .click();
         cy.get('.ant-btn-primary')
-            .contains(' Compare ')
+            .contains('Compare')
             .click();
         cy.get('.ant-table-tbody')
             .contains(oldDescription.toString())
@@ -60,10 +60,10 @@ describe('Check history functionality with editing stream and rejecting changes'
             .contains(newDescription)
             .should('exist');
         cy.get('.ant-btn-primary')
-            .contains(' Hide Compare ')
+            .contains('Hide Compare')
             .click(); 
         cy.get('.ant-btn-primary')
-            .contains(' Hide Compare ')
+            .contains('Hide Compare')
             .should('not.exist'); 
     });
 

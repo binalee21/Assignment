@@ -30,7 +30,7 @@ describe('Edit already existing Genre', () => {
 
         //verify Elements
         cy.get('.desktop')
-            .contains(' Edit Genre ')
+            .contains('Edit Genre')
             .should('be.visible');
         cy.get('[data-name="save"]').should('be.disabled');   
     });
