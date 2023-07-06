@@ -254,14 +254,78 @@ Cypress.Commands.add('typeIntoElementBasedOnLabel',(label, inptuText) => {
   .parents('nz-form-item').within(() => {
     cy.get('input')
       .clear()
-      .type(inptuText);
+      .type(inptuText.toString());
   });
+});
+
+Cypress.Commands.add("verifyLabelAndEnterInputValue", (inputField, value, delayTime=10) => {
+  cy.get(".ant-form-item")
+    .contains(inputField)
+    .parents("nz-form-item").within(() => {
+          cy.get("input").click({ force: true }).clear().type(value, { delay: delayTime });
+  })
+});
+
+//Command to verify label and select items from dropdown
+Cypress.Commands.add('verifyAndSelectFromDropdown', (selectElements, dropdown, numberOfItems = 1) => {
+  cy.get(".ant-form-item")
+    .contains(dropdown)
+    .scrollIntoView({force:true})
+    .parents("nz-form-item").within(() => {
+          cy.get("input").click({ force: true });
+  })
+  cy.wait(2000);
+  cy.get(".ant-select-dropdown").should("be.visible").within(() => {
+      for(let i=1; i<=numberOfItems; i++) {
+          cy.get(`.ant-select-item:nth-child(${i})`).invoke("attr", "class").then($class => {
+              if($class.includes("ant-select-item-option-selected")) {
+                  numberOfItems++;
+              }
+              else {
+                  cy.get(`.ant-select-item:nth-child(${i})`).invoke('attr', 'title')
+                  .then(text => {
+                      selectElements.push(text.trim());
+                      cy.get(`[title="${text.trim()}"]`).click({force:true});
+                  })
+              }
+          })
+      }
+      cy.log(`${dropdown} is selected`);
+  })
+  cy.enterInputText(dropdown, "{esc}");
+  cy.get(".ant-select-dropdown").should('not.exist');
+});
+
+Cypress.Commands.add("enterInputText", (inputField, inputText) => {
+  cy.get(".ant-form-item")
+    .contains(inputField)
+    .parents("nz-form-item").within(() => {
+          cy.get("input").should("be.visible").clear({force:true}).type(inputText);
+  })
+});
+
+//verify the toast message
+Cypress.Commands.add("verifyToastMessage", (message) => {
+  cy.get(".ant-notification-notice-description")
+  .should('have.text', message);
+
+  cy.wait(300);
+
+  cy.get(".ant-notification-notice-close-x").click();
 });
   
 Cypress.Commands.add('verifyElementWithText',(parentTag, elementText) => {
   cy.get(parentTag)
     .contains(elementText)
     .should('be.visible');
+});
+
+Cypress.Commands.add("verifyLabelAndClickOnIt", (inputField) => {
+  cy.get(".ant-form-item")
+    .contains(inputField)
+    .parents("nz-form-item").within(() => {
+          cy.get("input").click({ force: true });
+  })
 });
 
 Cypress.Commands.add("checkPagination", () => {
@@ -284,6 +348,23 @@ Cypress.Commands.add("checkPagination", () => {
   cy.get('li[title="Previous Page"]').should('have.class', 'ant-pagination-disabled');
 });
 
+Cypress.Commands.add("fetchElementValueWithIndex", (elementSelector, variable, index) => {
+  cy.get(elementSelector)
+    .eq(index)
+    .invoke('val')
+    .then( (data) => {
+      variable.push(data.toString());
+    });
+});
+
+Cypress.Commands.add('getRandomString',(stringLength) => {
+  var randomValues = '';
+  var stringValues = 'abcdehiklmnoprstuv0123456789';
+  for (var i = 0; i < stringLength; i++) {
+    randomValues = randomValues+stringValues.charAt(Math.floor(Math.random() * stringValues.length));
+  }
+  return randomValues;
+});
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //

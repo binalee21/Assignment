@@ -8,6 +8,7 @@
     "exclusions": "MX",
     "playlistCategories": "relaxing", 
     "tracksSearch": ["Relax", "Pursuit"],
+    "hostAddedToastMessage": "Host changes have been saved",
     "headerElements": [
         "ID", 
         "Host Name", 
